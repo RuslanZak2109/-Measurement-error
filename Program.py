@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import Combobox
+from tkinter import filedialog as fd
 import numpy as np
 import pandas as pd
 import statistics
@@ -32,11 +33,33 @@ def calculate():
     avg=[a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20]
     average = statistics.mean(avg)
     print("Среднее значение:", average)
-    std_deviation = statistics.stdev(avg)/(20 ** 0.5)
+    print (len(avg))
+    std_deviation = statistics.stdev(avg)/(len(avg) ** 0.5)
     std_deviation =round(std_deviation, 6)
     print("Стандартное отклонение:", std_deviation)
     messagebox.showinfo('Выходные данные', f'Ср.значение: {average} \n'  f'СКО: {std_deviation} ')
 
+def open_file ():
+    wanted_files = (
+
+            ("TEXT files", "*.txt"),
+        )
+
+    file_name = fd.askopenfile (filetypes=wanted_files)
+    if filename:
+        with open (file_name,"r") as file:
+            avg.insert = (END,file.read())
+            average.insert = (END,file.read())
+            std_deviation.insert = (END,file.read())
+            file.close()
+
+def save_file():
+    name = fd.asksaveasfilename(filetypes=(("TEXT files", "*.txt"), ("Py files", "*.py")))
+    if name:
+        avg.insert(END, f"Сохранить файл по пути {name}\n")
+        average.insert = (END,f"Сохранить файл по пути {name}\n" )
+        std_deviation.insert = (END, f"Сохранить файл по пути {name}\n")
+        file.close()
 
 #Оформление программмы
 window = Tk()
@@ -231,6 +254,20 @@ cal_btn = Button(
     text='Рассчитать ',
     command=calculate
 )
-cal_btn.grid(row=13, column=2)
+cal_btn.grid(row=13, column=2, pady=10)
+
+cal_btn = Button(
+    frame,
+    text='Открыть файл',
+    command=open_file
+)
+cal_btn.grid(row=16, column=2,  pady=10)
+
+cal_btn = Button(
+    frame,
+    text='Сохранить файл',
+    command=save_file
+)
+cal_btn.grid(row=16, column=3,  pady=10)
 
 window.mainloop()
